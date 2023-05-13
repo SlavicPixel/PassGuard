@@ -47,7 +47,13 @@ public class NewAccount extends AppCompatActivity {
                 String password = newPassword.getText().toString();
                 String passwordConfirm = newPasswordConfirm.getText().toString();
                 AccountManagement newAccount = new AccountManagement(username, password);
+                UserModel userModel;
+
                 if(newAccount.createNewAccount(passwordConfirm)){
+                    userModel = new UserModel(-1, username, password);
+                    DataBaseHelper dataBaseHelper = new DataBaseHelper(NewAccount.this, "users.db", null, 1);
+                    dataBaseHelper.addOne(userModel);
+
                     Toast.makeText(NewAccount.this, "Account successfully created", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(NewAccount.this, MainActivity.class);
                     startActivity(intent);

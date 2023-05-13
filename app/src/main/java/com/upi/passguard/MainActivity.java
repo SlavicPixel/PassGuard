@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String password = passwordText.getText().toString();
                 String username = usernameText.getText().toString();
+                String password = passwordText.getText().toString();
                 AccountManagement existingAccount = new AccountManagement(username, password);
                 if(existingAccount.loginAccount()){
                     //correct password
