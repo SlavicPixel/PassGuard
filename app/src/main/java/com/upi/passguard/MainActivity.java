@@ -18,8 +18,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView username =(TextView) findViewById(R.id.username);
-        TextView password =(TextView) findViewById(R.id.password);
+        TextView usernameText =(TextView) findViewById(R.id.username);
+        TextView passwordText =(TextView) findViewById(R.id.password);
 
         MaterialButton loginbtn = (MaterialButton) findViewById(R.id.loginbtn);
         MaterialButton newaccbtn = (MaterialButton) findViewById(R.id.newaccbtn);
@@ -28,8 +28,10 @@ public class MainActivity extends AppCompatActivity {
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(username.getText().toString().equals("admin") && password.getText().toString().equals("admin")){
+                String password = passwordText.getText().toString();
+                String username = usernameText.getText().toString();
+                AccountManagement existingAccount = new AccountManagement(username, password);
+                if(existingAccount.loginAccount()){
                     //correct password
                     Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                 }else {
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         newaccbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, VaultView.class);
+                Intent intent = new Intent(MainActivity.this, NewAccount.class);
                 startActivity(intent);
             }
         });
