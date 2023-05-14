@@ -13,6 +13,11 @@
         android:theme="@style/Theme.PassGuard"
         tools:targetApi="31">
         <activity
+            android:name=".AddEntry"
+            android:exported="false"
+            android:label="@string/title_activity_add_entry"
+            android:theme="@style/Theme.PassGuard" />
+        <activity
             android:name=".NewAccount"
             android:exported="false"
             android:label="@string/title_activity_new_account"

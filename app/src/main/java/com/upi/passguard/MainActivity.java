@@ -31,12 +31,16 @@ public class MainActivity extends AppCompatActivity {
                 String username = usernameText.getText().toString();
                 String password = passwordText.getText().toString();
                 AccountManagement existingAccount = new AccountManagement(username, password);
-                if(existingAccount.loginAccount()){
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(MainActivity.this,"passguard.db", null, 1);
+
+                if(dataBaseHelper.getUser(username, password)){
                     //correct password
                     Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this, VaultView.class);
+                    startActivity(intent);
                 }else {
                     //incorrect
-                    Toast.makeText(MainActivity.this, "Incorrect password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Incorrect password or user does not exist", Toast.LENGTH_SHORT).show();
                 }
 
 

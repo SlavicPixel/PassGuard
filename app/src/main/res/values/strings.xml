@@ -55,4 +55,11 @@
     <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="Vault">Enteries</string>
+    <string name="title_activity_add_entry">AddEntry</string>
+    <string name="titleEntry">Title</string>
+    <string name="usernameEntry">Username</string>
+    <string name="passwordEntry">Password</string>
+    <string name="urlEntry">URL</string>
+    <string name="notesEntry">Notes</string>
+    <string name="addEntryButton">Add Entry</string>
 </resources>

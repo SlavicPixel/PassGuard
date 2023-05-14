@@ -1,7 +1,10 @@
 package com.upi.passguard;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +30,16 @@ public class VaultView extends AppCompatActivity {
 
         binding = ActivityVaultViewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        FloatingActionButton newEntryButton = (FloatingActionButton) findViewById(R.id.newEntryButton);
+
+        newEntryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(VaultView.this, AddEntry.class);
+                startActivity(intent);
+            }
+        });
 
 
     }
