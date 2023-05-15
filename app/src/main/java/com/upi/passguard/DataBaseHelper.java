@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -83,7 +84,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(createTableStatment);
     }
-    
+
     public boolean addEntry(VaultModel vaultModel, String TABLE_NAME) {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues cv = new ContentValues();
@@ -98,12 +99,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return insert != -1;
     }
 
-    /*
-    //This method will be used to get entries from the database
-    public List<EntryModel> getEnteries(){
-        List<EntryModel> returnList = new ArrayList<>();
 
-        String queryString = "SELECT * FROM" + ENTRY_TABLE;
+
+    public List<VaultModel> getEntries(String ENTRY_TABLE){
+        List<VaultModel> returnList = new ArrayList<>();
+
+        String queryString = "SELECT * FROM " + ENTRY_TABLE;
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -113,11 +114,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             // loop through the cursors (result set) and create new entry object. Put them in return list
             do {
                 int entryID = cursor.getInt(0);
-                // add variables for corresponding columns in the table
+                String entryTitle = cursor.getString(1);
+                String entryUsername = cursor.getString(2);
+                String entryPassword = cursor.getString(3);
+                String entryUrl = cursor.getString(4);
+                String entryNotes = cursor.getString(5);
 
-                EntryModel newEntry  = new EntryModel(entryID); // add all other needed variables
+
+                VaultModel newEntry  = new VaultModel(entryID, entryTitle, entryUsername, entryPassword, entryUrl, entryNotes);
                 returnList.add(newEntry);
-            } while (cursor.moveToFirst());
+            } while (cursor.moveToNext());
         } else {
             // failure, do not add anything to the list
         }
@@ -128,5 +134,4 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return returnList;
     }
 
-     */
 }

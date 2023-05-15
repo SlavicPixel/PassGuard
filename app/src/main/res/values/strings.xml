@@ -63,4 +63,6 @@
     <string name="notesEntry">Notes</string>
     <string name="addEntryButton">Add Entry</string>
     <string name="logutButton">Logout</string>
+    <string name="myVaultText">My Vault</string>
+    <string name="newEntryButtonDesc">Add a new entry</string>
 </resources>
