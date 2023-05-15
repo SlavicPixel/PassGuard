@@ -1,5 +1,6 @@
 package com.upi.passguard;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -41,11 +42,14 @@ public class AddEntry extends AppCompatActivity {
             String password = passwordText.getText().toString();
             String url = urlText.getText().toString();
             String notes = notesText.getText().toString();
+            SessionManagement sessionManagement = new SessionManagement(AddEntry.this);
 
             VaultModel vaultModel = new VaultModel(-1, title, username, password, url, notes);
             DataBaseHelper dataBaseHelper = new DataBaseHelper(AddEntry.this, "passguard.db", null, 1);
-            dataBaseHelper.addEntry(vaultModel);
+            dataBaseHelper.addEntry(vaultModel, sessionManagement.getSession());
             Toast.makeText(AddEntry.this, "Entry successfully added", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(AddEntry.this, VaultView.class);
+            startActivity(intent);
 
         });
 

@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         MaterialButton loginbtn = (MaterialButton) findViewById(R.id.loginbtn);
         MaterialButton newaccbtn = (MaterialButton) findViewById(R.id.newaccbtn);
 
-        //admin and admin
+
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
                 if(dataBaseHelper.getUser(username, password)){
                     //correct password
+                    SessionManagement sessionManagement = new SessionManagement(MainActivity.this);
+                    sessionManagement.saveSession(username);
+
                     Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, VaultView.class);
                     startActivity(intent);

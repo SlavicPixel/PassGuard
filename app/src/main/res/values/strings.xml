@@ -62,4 +62,5 @@
     <string name="urlEntry">URL</string>
     <string name="notesEntry">Notes</string>
     <string name="addEntryButton">Add Entry</string>
+    <string name="logutButton">Logout</string>
 </resources>

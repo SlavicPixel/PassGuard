@@ -74,21 +74,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void createVault(String username){
+    public void createVault(String TABLE_NAME){
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String createTableStatment = "CREATE TABLE " + username +
+        String createTableStatment = "CREATE TABLE " + TABLE_NAME +
                 " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_TITLE + " TEXT, " + COLUMN_USERNAME + " TEXT, " + COLUMN_PASSWORD + " TEXT, "
                 + COLUMN_URL + " TEXT, " + COLUMN_NOTES + " TEXT)";
 
         db.execSQL(createTableStatment);
     }
-
-    // current state of this method will save to a hard coded table name
-    // need to implement in a way that every user will have it's own table
-    // need to implement session so the app will know the username of a currently logged in user
-    // table name = username -> current idea
-    public boolean addEntry(VaultModel vaultModel) {
+    
+    public boolean addEntry(VaultModel vaultModel, String TABLE_NAME) {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -98,7 +94,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_URL, vaultModel.getUrl());
         cv.put(COLUMN_NOTES, vaultModel.getNotes());
 
-        long insert = db.insert("testUser", null, cv);
+        long insert = db.insert(TABLE_NAME, null, cv);
         return insert != -1;
     }
 
