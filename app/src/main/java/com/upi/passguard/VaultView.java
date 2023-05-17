@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.navigation.ui.AppBarConfiguration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.upi.passguard.databinding.ActivityVaultViewBinding;
 
@@ -24,7 +26,8 @@ public class VaultView extends AppCompatActivity {
     private ActivityVaultViewBinding binding;
     Button logOutButton;
     FloatingActionButton newEntryButton;
-    ListView entriesListView;
+    //ListView entriesListView;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +36,24 @@ public class VaultView extends AppCompatActivity {
         binding = ActivityVaultViewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        newEntryButton = (FloatingActionButton) findViewById(R.id.newEntryButton);
+        newEntryButton = findViewById(R.id.newEntryButton);
         logOutButton = findViewById(R.id.logOutButton);
-        entriesListView = findViewById(R.id.entriesView);
+        //entriesListView = findViewById(R.id.entriesView);
+        recyclerView = findViewById(R.id.entriesRecyclerView);
+
         DataBaseHelper dataBaseHelper = new DataBaseHelper(VaultView.this, "passguard.db", null, 1);
         SessionManagement sessionManagement = new SessionManagement(VaultView.this);
         List<VaultModel> entries = dataBaseHelper.getEntries(sessionManagement.getSession());
+
+        /* When using ListView
         ArrayAdapter<VaultModel> entryArrayAdapter = new ArrayAdapter<VaultModel>(VaultView.this, android.R.layout.simple_list_item_1, entries);
         entriesListView.setAdapter(entryArrayAdapter);
+         */
+
+        Entries_RecyclerViewAdapter adapter = new Entries_RecyclerViewAdapter(VaultView.this, entries);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(VaultView.this));
+
 
         newEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
