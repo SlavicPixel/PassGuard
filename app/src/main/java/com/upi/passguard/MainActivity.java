@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
                 String password = passwordText.getText().toString();
                 AccountManagement existingAccount = new AccountManagement(username, password);
                 DataBaseHelper dataBaseHelper = new DataBaseHelper(MainActivity.this,"passguard.db", null, 1);
+                TextView signin = findViewById(R.id.signin);
 
                 if(dataBaseHelper.getUser(username, password)){
                     //correct password

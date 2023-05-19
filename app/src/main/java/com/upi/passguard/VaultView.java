@@ -20,7 +20,7 @@ import com.upi.passguard.databinding.ActivityVaultViewBinding;
 
 import java.util.List;
 
-public class VaultView extends AppCompatActivity {
+public class VaultView extends AppCompatActivity implements Entries_RecylerViewInterface {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityVaultViewBinding binding;
@@ -28,6 +28,7 @@ public class VaultView extends AppCompatActivity {
     FloatingActionButton newEntryButton;
     //ListView entriesListView;
     RecyclerView recyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,19 +39,13 @@ public class VaultView extends AppCompatActivity {
 
         newEntryButton = findViewById(R.id.newEntryButton);
         logOutButton = findViewById(R.id.logOutButton);
-        //entriesListView = findViewById(R.id.entriesView);
         recyclerView = findViewById(R.id.entriesRecyclerView);
 
         DataBaseHelper dataBaseHelper = new DataBaseHelper(VaultView.this, "passguard.db", null, 1);
         SessionManagement sessionManagement = new SessionManagement(VaultView.this);
         List<VaultModel> entries = dataBaseHelper.getEntries(sessionManagement.getSession());
 
-        /* When using ListView
-        ArrayAdapter<VaultModel> entryArrayAdapter = new ArrayAdapter<VaultModel>(VaultView.this, android.R.layout.simple_list_item_1, entries);
-        entriesListView.setAdapter(entryArrayAdapter);
-         */
-
-        Entries_RecyclerViewAdapter adapter = new Entries_RecyclerViewAdapter(VaultView.this, entries);
+        Entries_RecyclerViewAdapter adapter = new Entries_RecyclerViewAdapter(VaultView.this, entries, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(VaultView.this));
 
@@ -74,5 +69,22 @@ public class VaultView extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Intent intent = new Intent(VaultView.this, EntryView.class);
+
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(VaultView.this, "passguard.db", null, 1);
+        SessionManagement sessionManagement = new SessionManagement(VaultView.this);
+        List<VaultModel> entries = dataBaseHelper.getEntries(sessionManagement.getSession());
+
+        intent.putExtra("TITLE", entries.get(position).getTitle());
+        intent.putExtra("USERNAME", entries.get(position).getUsername());
+        intent.putExtra("PASSWORD", entries.get(position).getPassword());
+        intent.putExtra("URL", entries.get(position).getUrl());
+        intent.putExtra("NOTES", entries.get(position).getNotes());
+
+        startActivity(intent);
     }
 }

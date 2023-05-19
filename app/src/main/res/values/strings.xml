@@ -65,4 +65,5 @@
     <string name="logutButton">Logout</string>
     <string name="myVaultText">My Vault</string>
     <string name="newEntryButtonDesc">Add a new entry</string>
+    <string name="title_activity_entry_view">EntryView</string>
 </resources>

@@ -12,12 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class Entries_RecyclerViewAdapter extends RecyclerView.Adapter<Entries_RecyclerViewAdapter.MyViewHolder>{
+    private final Entries_RecylerViewInterface entries_recylerViewInterface;
     Context context;
     List<VaultModel> entries;
 
-    public Entries_RecyclerViewAdapter(Context context, List<VaultModel> entries){
+    public Entries_RecyclerViewAdapter(Context context, List<VaultModel> entries, Entries_RecylerViewInterface entries_recylerViewInterface){
         this.context = context;
         this.entries = entries;
+        this.entries_recylerViewInterface = entries_recylerViewInterface;
     }
 
     @NonNull
@@ -27,7 +29,7 @@ public class Entries_RecyclerViewAdapter extends RecyclerView.Adapter<Entries_Re
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.recycle_view_row, parent, false);
 
-        return new Entries_RecyclerViewAdapter.MyViewHolder(view);
+        return new Entries_RecyclerViewAdapter.MyViewHolder(view, entries_recylerViewInterface);
     }
 
     @Override
@@ -48,11 +50,24 @@ public class Entries_RecyclerViewAdapter extends RecyclerView.Adapter<Entries_Re
 
         TextView tvTitle, tvUsername;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView, Entries_RecylerViewInterface entries_recylerViewInterface) {
             super(itemView);
 
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvUsername = itemView.findViewById(R.id.tvUsername);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(entries_recylerViewInterface != null) {
+                        int pos = getAdapterPosition();
+
+                        if(pos != RecyclerView.NO_POSITION){
+                            entries_recylerViewInterface.onItemClick(pos);
+                        }
+                    }
+                }
+            });
         }
     }
 }
