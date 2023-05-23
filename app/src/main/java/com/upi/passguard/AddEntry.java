@@ -9,10 +9,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.navigation.ui.AppBarConfiguration;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.upi.passguard.databinding.ActivityAddEntryBinding;
+
+import java.util.Objects;
 
 public class AddEntry extends AppCompatActivity {
 
@@ -20,6 +24,7 @@ public class AddEntry extends AppCompatActivity {
     private ActivityAddEntryBinding binding;
     Button addEntryButton;
     EditText titleText, usernameText, passwordText, urlText, notesText;
+    MaterialToolbar toolbar;
     SharedPreferences sharedPreferences;
 
     @Override
@@ -28,6 +33,7 @@ public class AddEntry extends AppCompatActivity {
 
         binding = ActivityAddEntryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar);
 
         addEntryButton = findViewById(R.id.addEntryButton);
         titleText = findViewById(R.id.titleEntry);
@@ -35,6 +41,10 @@ public class AddEntry extends AppCompatActivity {
         passwordText = findViewById(R.id.passwordEntry);
         urlText = findViewById(R.id.urlEntry);
         notesText = findViewById(R.id.notesEntry);
+        toolbar = findViewById(R.id.toolbar);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("New Item");
 
         addEntryButton.setOnClickListener(v -> {
             String title = titleText.getText().toString();
