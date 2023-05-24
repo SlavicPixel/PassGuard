@@ -35,6 +35,9 @@ public class AddEntry extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
 
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("New Item");
+
         addEntryButton = findViewById(R.id.addEntryButton);
         titleText = findViewById(R.id.titleEntry);
         usernameText = findViewById(R.id.usernameEntry);
@@ -42,9 +45,6 @@ public class AddEntry extends AppCompatActivity {
         urlText = findViewById(R.id.urlEntry);
         notesText = findViewById(R.id.notesEntry);
         toolbar = findViewById(R.id.toolbar);
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle("New Item");
 
         addEntryButton.setOnClickListener(v -> {
             String title = titleText.getText().toString();

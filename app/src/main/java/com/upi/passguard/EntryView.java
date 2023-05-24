@@ -3,23 +3,16 @@ package com.upi.passguard;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.view.WindowCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.upi.passguard.databinding.ActivityEntryViewBinding;
 
@@ -50,6 +43,12 @@ public class EntryView extends AppCompatActivity {
         urlTV = findViewById(R.id.urlTextView);
         notesTV = findViewById(R.id.notesTextView);
 
+        titleTV.setShowSoftInputOnFocus(false);
+        usernameTV.setShowSoftInputOnFocus(false);
+        passwordTV.setShowSoftInputOnFocus(false);
+        urlTV.setShowSoftInputOnFocus(false);
+        notesTV.setShowSoftInputOnFocus(false);
+
         titleTV.setText(title);
         usernameTV.setText(username);
         passwordTV.setText(password);
@@ -74,7 +73,7 @@ public class EntryView extends AppCompatActivity {
         SessionManagement sessionManagement = new SessionManagement(EntryView.this);
         int itemId = item.getItemId();
 
-        if (itemId == R.id.action_settings){
+        if (itemId == R.id.deleteEntry){
             id = getIntent().getIntExtra("ID", 0);
             dataBaseHelper.deleteEntry(id, sessionManagement.getSession());
             Toast.makeText(this, "Item deleted", Toast.LENGTH_SHORT).show();

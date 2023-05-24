@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:background="@color/BGColor"
     android:fitsSystemWindows="true"
-    tools:context=".AddEntry" >
+    tools:context=".AddEntry"
+    android:theme="@style/Theme.AppCompat">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -123,5 +124,7 @@
         android:text="@string/addEntryButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/design_default_color_secondary"
         app:layout_constraintTop_toBottomOf="@+id/notesEntry" />
 </androidx.constraintlayout.widget.ConstraintLayout>
