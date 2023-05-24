@@ -1,13 +1,19 @@
 package com.upi.passguard;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.view.WindowCompat;
 import androidx.navigation.NavController;
@@ -21,6 +27,7 @@ public class EntryView extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityEntryViewBinding binding;
+    int id;
     String title, username, password, url, notes;
     TextView titleTV, usernameTV, passwordTV, urlTV, notesTV;
 
@@ -52,8 +59,29 @@ public class EntryView extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
 
 
-
-
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.entryviewtb, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(EntryView.this, "passguard.db", null, 1);
+        SessionManagement sessionManagement = new SessionManagement(EntryView.this);
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.action_settings){
+            id = getIntent().getIntExtra("ID", 0);
+            dataBaseHelper.deleteEntry(id, sessionManagement.getSession());
+            Toast.makeText(this, "Item deleted", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(EntryView.this, VaultView.class);
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

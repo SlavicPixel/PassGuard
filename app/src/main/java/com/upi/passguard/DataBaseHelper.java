@@ -78,11 +78,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void createVault(String TABLE_NAME){
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String createTableStatment = "CREATE TABLE " + TABLE_NAME +
+        String createTableStatement = "CREATE TABLE " + TABLE_NAME +
                 " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_TITLE + " TEXT, " + COLUMN_USERNAME + " TEXT, " + COLUMN_PASSWORD + " TEXT, "
                 + COLUMN_URL + " TEXT, " + COLUMN_NOTES + " TEXT)";
 
-        db.execSQL(createTableStatment);
+        db.execSQL(createTableStatement);
     }
 
     public boolean addEntry(VaultModel vaultModel, String TABLE_NAME) {
@@ -99,6 +99,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return insert != -1;
     }
 
+    public void deleteEntry(int id, String TABLE_NAME) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String deleteEntryStatement = "DELETE FROM " + TABLE_NAME + " WHERE ID = " + id;
+
+        db.execSQL(deleteEntryStatement);
+    }
 
 
     public List<VaultModel> getEntries(String ENTRY_TABLE){

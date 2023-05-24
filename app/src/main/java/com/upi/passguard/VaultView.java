@@ -79,6 +79,7 @@ public class VaultView extends AppCompatActivity implements Entries_RecylerViewI
         SessionManagement sessionManagement = new SessionManagement(VaultView.this);
         List<VaultModel> entries = dataBaseHelper.getEntries(sessionManagement.getSession());
 
+        intent.putExtra("ID", entries.get(position).getId());
         intent.putExtra("TITLE", entries.get(position).getTitle());
         intent.putExtra("USERNAME", entries.get(position).getUsername());
         intent.putExtra("PASSWORD", entries.get(position).getPassword());
