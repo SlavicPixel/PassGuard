@@ -68,20 +68,6 @@ public class VaultView extends AppCompatActivity implements Entries_RecylerViewI
             }
         });
 
-        /*
-        logOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sessionManagement.removeSession();
-
-                Intent intent = new Intent(VaultView.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
-         */
-
-
     }
 
     @Override

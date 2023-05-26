@@ -9,12 +9,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.navigation.ui.AppBarConfiguration;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.upi.passguard.databinding.ActivityEntryViewBinding;
+
+import java.util.List;
+import java.util.Objects;
 
 public class EntryView extends AppCompatActivity {
 
@@ -23,6 +28,7 @@ public class EntryView extends AppCompatActivity {
     int id;
     String title, username, password, url, notes;
     TextView titleTV, usernameTV, passwordTV, urlTV, notesTV;
+    FloatingActionButton editEntryButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +36,10 @@ public class EntryView extends AppCompatActivity {
         setContentView(R.layout.activity_entry_view);
         binding = ActivityEntryViewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("Item information");
 
         title = getIntent().getStringExtra("TITLE");
         username = getIntent().getStringExtra("USERNAME");
@@ -42,6 +52,7 @@ public class EntryView extends AppCompatActivity {
         passwordTV = findViewById(R.id.passwordTextView);
         urlTV = findViewById(R.id.urlTextView);
         notesTV = findViewById(R.id.notesTextView);
+        editEntryButton = findViewById(R.id.editEntryButton);
 
         titleTV.setShowSoftInputOnFocus(false);
         usernameTV.setShowSoftInputOnFocus(false);
@@ -55,9 +66,26 @@ public class EntryView extends AppCompatActivity {
         urlTV.setText(url);
         notesTV.setText(notes);
 
-        setSupportActionBar(binding.toolbar);
+        editEntryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EntryView.this, EditEntry.class);
 
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(EntryView.this, "passguard.db", null, 1);
+                SessionManagement sessionManagement = new SessionManagement(EntryView.this);
+                List<VaultModel> entries = dataBaseHelper.getEntries(sessionManagement.getSession());
+                id = getIntent().getIntExtra("ID", 0);
 
+                intent.putExtra("ID", id);
+                intent.putExtra("TITLE", title);
+                intent.putExtra("USERNAME", username);
+                intent.putExtra("PASSWORD", password);
+                intent.putExtra("URL", url);
+                intent.putExtra("NOTES", notes);
+
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

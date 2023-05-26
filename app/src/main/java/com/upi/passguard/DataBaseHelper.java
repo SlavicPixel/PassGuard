@@ -107,6 +107,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(deleteEntryStatement);
     }
 
+    public void editEntry(int id, String TABLE_NAME, String newTitle, String newUsername, String newPassword, String newUrl, String newNotes) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String editEntryStatement = "UPDATE " + TABLE_NAME + " SET " +
+                COLUMN_TITLE + " = '" + newTitle + "', " +
+                COLUMN_USERNAME + " = '" + newUsername + "', " +
+                COLUMN_PASSWORD + " = '" + newPassword + "', " +
+                COLUMN_URL + " = '" + newUrl + "', " +
+                COLUMN_NOTES + " = '" + newNotes + "'" +
+                " WHERE " + ID + " = " + id;
+
+                db.execSQL(editEntryStatement);
+    }
+
 
     public List<VaultModel> getEntries(String ENTRY_TABLE){
         List<VaultModel> returnList = new ArrayList<>();
