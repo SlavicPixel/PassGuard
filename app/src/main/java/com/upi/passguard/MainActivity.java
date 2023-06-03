@@ -18,11 +18,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView usernameText =(TextView) findViewById(R.id.username);
-        TextView passwordText =(TextView) findViewById(R.id.password);
+        TextView usernameText = findViewById(R.id.username);
+        TextView passwordText = findViewById(R.id.password);
 
-        MaterialButton loginbtn = (MaterialButton) findViewById(R.id.loginbtn);
-        MaterialButton newaccbtn = (MaterialButton) findViewById(R.id.newaccbtn);
+        MaterialButton loginbtn = findViewById(R.id.loginbtn);
+        MaterialButton newaccbtn =  findViewById(R.id.newaccbtn);
 
 
         loginbtn.setOnClickListener(new View.OnClickListener() {
@@ -30,9 +30,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String username = usernameText.getText().toString();
                 String password = passwordText.getText().toString();
-                AccountManagement existingAccount = new AccountManagement(username, password);
                 DataBaseHelper dataBaseHelper = new DataBaseHelper(MainActivity.this,"passguard.db", null, 1);
-                TextView signin = findViewById(R.id.signin);
 
                 if(dataBaseHelper.getUser(username, password)){
                     //correct password

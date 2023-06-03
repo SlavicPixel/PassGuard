@@ -40,7 +40,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean addOne(UserModel userModel) {
+    public boolean addUser(UserModel userModel) {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -50,6 +50,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         long insert = db.insert(USERS_TABLE, null, cv);
         if (insert == -1) return false;
 
+        db.close();
         return true;
     }
 
@@ -83,6 +84,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + COLUMN_URL + " TEXT, " + COLUMN_NOTES + " TEXT)";
 
         db.execSQL(createTableStatement);
+        db.close();
     }
 
     public boolean addEntry(VaultModel vaultModel, String TABLE_NAME) {
@@ -105,6 +107,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String deleteEntryStatement = "DELETE FROM " + TABLE_NAME + " WHERE ID = " + id;
 
         db.execSQL(deleteEntryStatement);
+        db.close();
     }
 
     public void editEntry(int id, String TABLE_NAME, String newTitle, String newUsername, String newPassword, String newUrl, String newNotes) {
@@ -155,4 +158,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return returnList;
     }
 
+    public boolean userExists(String TABLE_NAME) {
+        String queryString = "SELECT * FROM sqlite_master WHERE type='table' AND name='" + TABLE_NAME + "'";
+        boolean exists = true;
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery(queryString, null);
+            cursor.moveToFirst();
+            int count = cursor.getCount();
+            if(count == 0) exists = false;
+
+            cursor.close();
+            db.close();
+
+
+        } catch (Exception e) {
+            return false;
+        }
+        return exists;
+    }
 }
