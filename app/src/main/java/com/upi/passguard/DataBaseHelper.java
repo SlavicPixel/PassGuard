@@ -1,5 +1,6 @@
 package com.upi.passguard;
 
+import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -25,6 +26,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public DataBaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
+
 
     // called when a database if accessed for the first time
     @Override
