@@ -13,9 +13,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 
-import static org.hamcrest.Matchers.containsString;
-import static java.util.regex.Pattern.matches;
-
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -49,7 +46,7 @@ public class AppFlowTest {
 
         // 1. From MainActivity, click on the register button to open RegisterActivity
         onView(withId(R.id.newaccbtn)).perform(click());
-        intended(hasComponent(NewAccount.class.getName()));
+        intended(hasComponent(NewAccountActivity.class.getName()));
 
         // 2. In NewAccounnt activity, input user information and click the register button
         onView(withId(R.id.newUsername)).perform(typeText("AppFlowTestingUsername"), closeSoftKeyboard());
@@ -62,16 +59,16 @@ public class AppFlowTest {
         onView(withId(R.id.password)).perform(typeText("appFlowTestingPassword"), closeSoftKeyboard());
         onView(withId(R.id.loginbtn)).perform(click());
 
-        // 5. After login, VaultView activity should be opened
-        intended(hasComponent(VaultView.class.getName()));
+        // 5. After login, VaultViewActivity activity should be opened
+        intended(hasComponent(VaultViewActivity.class.getName()));
 
-        // 6. In VaultView activity, click on Add Entry button
+        // 6. In VaultViewActivity activity, click on Add Entry button
         onView(withId(R.id.newEntryButton)).perform(click());
 
-        // 7. After AddEntry button click, AddEntry activity should be opened
-        intended(hasComponent(AddEntry.class.getName()));
+        // 7. After AddEntryActivity button click, AddEntryActivity activity should be opened
+        intended(hasComponent(AddEntryActivity.class.getName()));
 
-        // 8. In AddEntry activity, input entry information and click the add entry button
+        // 8. In AddEntryActivity activity, input entry information and click the add entry button
         String Title = "testTitle";
         String Username = "testUsername";
         String Password = "testPassword";
@@ -90,8 +87,8 @@ public class AppFlowTest {
         onView(withId(R.id.entriesRecyclerView))
                 .perform(actionOnItemAtPosition(0, click()));
 
-        // 10. EntryView activity should appear
-        intended(hasComponent(EntryView.class.getName()));
+        // 10. EntryViewActivity activity should appear
+        intended(hasComponent(EntryViewActivity.class.getName()));
 
         // 11. Check if correct values were inserted
         onView(withId(R.id.titleTextView)).check(matches(withText(Title)));
@@ -103,7 +100,7 @@ public class AppFlowTest {
         // 12. Click the edit button to edit the selected entry
         onView(withId(R.id.editEntryButton)).perform(click());
 
-        // 14. In EditEntry activity, edit the selected entry and updated it with new values
+        // 14. In EditEntryActivity activity, edit the selected entry and updated it with new values
         onView(withId(R.id.titleTextView)).perform(typeText("Updated"), closeSoftKeyboard());
         onView(withId(R.id.usernameTextView)).perform(typeText("Updated"), closeSoftKeyboard());
         onView(withId(R.id.passwordTextView)).perform(typeText("Updated"), closeSoftKeyboard());
@@ -115,7 +112,7 @@ public class AppFlowTest {
         onView(withId(R.id.entriesRecyclerView))
                 .perform(actionOnItemAtPosition(0, click()));
 
-        //16. EntryView activity should appear, check if values were updates
+        //16. EntryViewActivity activity should appear, check if values were updates
         onView(withId(R.id.titleTextView)).check(matches(withText(Title + "Updated")));
         onView(withId(R.id.usernameTextView)).check(matches(withText(Username + "Updated")));
         onView(withId(R.id.passwordTextView)).check(matches(withText(Password + "Updated")));

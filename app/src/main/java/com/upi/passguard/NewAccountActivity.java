@@ -15,7 +15,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 
 import com.upi.passguard.databinding.ActivityNewAccountBinding;
 
-public class NewAccount extends AppCompatActivity {
+public class NewAccountActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityNewAccountBinding binding;
@@ -41,7 +41,7 @@ public class NewAccount extends AppCompatActivity {
                 String username = newUsername.getText().toString();
                 String password = newPassword.getText().toString();
                 String passwordConfirm = newPasswordConfirm.getText().toString();
-                DataBaseHelper dataBaseHelper = new DataBaseHelper(NewAccount.this, "passguard.db", null, 1);
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(NewAccountActivity.this, "passguard.db", null, 1);
                 UserModel userModel;
 
                 if(!dataBaseHelper.userExists(username))
@@ -51,16 +51,16 @@ public class NewAccount extends AppCompatActivity {
                         dataBaseHelper.addUser(userModel);
                         dataBaseHelper.createVault(username);
 
-                        Toast.makeText(NewAccount.this, "Account successfully created", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(NewAccount.this, MainActivity.class);
+                        Toast.makeText(NewAccountActivity.this, "Account successfully created", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(NewAccountActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
                     else {
-                        Toast.makeText(NewAccount.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NewAccountActivity.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
                     }
                 }
                 else {
-                    Toast.makeText(NewAccount.this, "User with that name already exists. Please choose a different username.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewAccountActivity.this, "User with that name already exists. Please choose a different username.", Toast.LENGTH_SHORT).show();
                 }
 
             }

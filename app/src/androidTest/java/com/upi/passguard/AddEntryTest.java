@@ -48,16 +48,16 @@ public class AddEntryTest {
         onView(withId(R.id.password)).perform(typeText("addentrytesting"), closeSoftKeyboard());
         onView(withId(R.id.loginbtn)).perform(click());
 
-        // 2. After login, VaultView activity should be opened
-        intended(hasComponent(VaultView.class.getName()));
+        // 2. After login, VaultViewActivity activity should be opened
+        intended(hasComponent(VaultViewActivity.class.getName()));
 
-        // 3. In VaultView activity, click on Add Entry button
+        // 3. In VaultViewActivity activity, click on Add Entry button
         onView(withId(R.id.newEntryButton)).perform(click());
 
-        // 4. After AddEntry button click, AddEntry activity should be opened
-        intended(hasComponent(AddEntry.class.getName()));
+        // 4. After AddEntryActivity button click, AddEntryActivity activity should be opened
+        intended(hasComponent(AddEntryActivity.class.getName()));
 
-        // 5. In AddEntry activity, input entry information and click the add entry button
+        // 5. In AddEntryActivity activity, input entry information and click the add entry button
         String Title = "Add Entry Test";
         String Username = "testUser";
         String Password = "testing";
@@ -75,8 +75,8 @@ public class AddEntryTest {
         onView(withId(R.id.entriesRecyclerView))
                 .perform(actionOnItemAtPosition(0, click()));
 
-        // 7. EntryView activity should appear
-        intended(hasComponent(EntryView.class.getName()));
+        // 7. EntryViewActivity activity should appear
+        intended(hasComponent(EntryViewActivity.class.getName()));
 
         // 8. Check if correct values were inserted
         onView(withId(R.id.titleTextView)).check(matches(withText(Title)));

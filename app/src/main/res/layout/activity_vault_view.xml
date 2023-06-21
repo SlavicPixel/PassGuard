@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#347C98"
     android:fitsSystemWindows="true"
-    tools:context=".VaultView"
+    tools:context=".VaultViewActivity"
     android:theme="@style/Theme.AppCompat">
 
     <!--

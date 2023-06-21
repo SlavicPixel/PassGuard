@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/BGColor"
     android:fitsSystemWindows="true"
-    tools:context=".AddEntry"
+    tools:context=".AddEntryActivity"
     android:theme="@style/Theme.AppCompat">
 
     <com.google.android.material.appbar.AppBarLayout

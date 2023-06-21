@@ -12,10 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,7 +23,7 @@ import com.upi.passguard.databinding.ActivityVaultViewBinding;
 import java.util.List;
 import java.util.Objects;
 
-public class VaultView extends AppCompatActivity implements Entries_RecylerViewInterface {
+public class VaultViewActivity extends AppCompatActivity implements Entries_RecylerViewInterface {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityVaultViewBinding binding;
@@ -51,19 +48,19 @@ public class VaultView extends AppCompatActivity implements Entries_RecylerViewI
         //logOutButton = findViewById(R.id.logOutButton);
         recyclerView = findViewById(R.id.entriesRecyclerView);
 
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(VaultView.this, "passguard.db", null, 1);
-        SessionManagement sessionManagement = new SessionManagement(VaultView.this);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(VaultViewActivity.this, "passguard.db", null, 1);
+        SessionManagement sessionManagement = new SessionManagement(VaultViewActivity.this);
         List<VaultModel> entries = dataBaseHelper.getEntries(sessionManagement.getSession());
 
-        Entries_RecyclerViewAdapter adapter = new Entries_RecyclerViewAdapter(VaultView.this, entries, this);
+        Entries_RecyclerViewAdapter adapter = new Entries_RecyclerViewAdapter(VaultViewActivity.this, entries, this);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(VaultView.this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(VaultViewActivity.this));
 
 
         newEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(VaultView.this, AddEntry.class);
+                Intent intent = new Intent(VaultViewActivity.this, AddEntryActivity.class);
                 startActivity(intent);
             }
         });
@@ -72,10 +69,10 @@ public class VaultView extends AppCompatActivity implements Entries_RecylerViewI
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(VaultView.this, EntryView.class);
+        Intent intent = new Intent(VaultViewActivity.this, EntryViewActivity.class);
 
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(VaultView.this, "passguard.db", null, 1);
-        SessionManagement sessionManagement = new SessionManagement(VaultView.this);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(VaultViewActivity.this, "passguard.db", null, 1);
+        SessionManagement sessionManagement = new SessionManagement(VaultViewActivity.this);
         List<VaultModel> entries = dataBaseHelper.getEntries(sessionManagement.getSession());
 
         intent.putExtra("ID", entries.get(position).getId());
@@ -101,10 +98,10 @@ public class VaultView extends AppCompatActivity implements Entries_RecylerViewI
         int itemId = item.getItemId();
 
         if (itemId == R.id.logout){
-            SessionManagement sessionManagement = new SessionManagement(VaultView.this);
+            SessionManagement sessionManagement = new SessionManagement(VaultViewActivity.this);
             sessionManagement.removeSession();
 
-            Intent intent = new Intent(VaultView.this, MainActivity.class);
+            Intent intent = new Intent(VaultViewActivity.this, MainActivity.class);
             startActivity(intent);
         }
 

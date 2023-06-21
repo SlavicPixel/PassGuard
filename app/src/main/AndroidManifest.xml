@@ -13,25 +13,25 @@
         android:theme="@style/Theme.PassGuard"
         tools:targetApi="31">
         <activity
-            android:name=".EditEntry"
+            android:name=".EditEntryActivity"
             android:exported="false" />
         <activity
-            android:name=".EntryView"
+            android:name=".EntryViewActivity"
             android:exported="false"
             android:label="@string/title_activity_entry_view"
             android:theme="@style/Theme.PassGuard" />
         <activity
-            android:name=".AddEntry"
+            android:name=".AddEntryActivity"
             android:exported="false"
             android:label="@string/title_activity_add_entry"
             android:theme="@style/Theme.PassGuard" />
         <activity
-            android:name=".NewAccount"
+            android:name=".NewAccountActivity"
             android:exported="false"
             android:label="@string/title_activity_new_account"
             android:theme="@style/Theme.PassGuard" />
         <activity
-            android:name=".VaultView"
+            android:name=".VaultViewActivity"
             android:exported="false"
             android:label="@string/title_activity_vault_view"
             android:theme="@style/Theme.PassGuard" />

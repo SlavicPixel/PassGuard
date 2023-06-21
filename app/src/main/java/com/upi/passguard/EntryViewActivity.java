@@ -21,7 +21,7 @@ import com.upi.passguard.databinding.ActivityEntryViewBinding;
 import java.util.List;
 import java.util.Objects;
 
-public class EntryView extends AppCompatActivity {
+public class EntryViewActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityEntryViewBinding binding;
@@ -69,10 +69,10 @@ public class EntryView extends AppCompatActivity {
         editEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EntryView.this, EditEntry.class);
+                Intent intent = new Intent(EntryViewActivity.this, EditEntryActivity.class);
 
-                DataBaseHelper dataBaseHelper = new DataBaseHelper(EntryView.this, "passguard.db", null, 1);
-                SessionManagement sessionManagement = new SessionManagement(EntryView.this);
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(EntryViewActivity.this, "passguard.db", null, 1);
+                SessionManagement sessionManagement = new SessionManagement(EntryViewActivity.this);
                 List<VaultModel> entries = dataBaseHelper.getEntries(sessionManagement.getSession());
                 id = getIntent().getIntExtra("ID", 0);
 
@@ -97,15 +97,15 @@ public class EntryView extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(EntryView.this, "passguard.db", null, 1);
-        SessionManagement sessionManagement = new SessionManagement(EntryView.this);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(EntryViewActivity.this, "passguard.db", null, 1);
+        SessionManagement sessionManagement = new SessionManagement(EntryViewActivity.this);
         int itemId = item.getItemId();
 
         if (itemId == R.id.deleteEntry){
             id = getIntent().getIntExtra("ID", 0);
             dataBaseHelper.deleteEntry(id, sessionManagement.getSession());
             Toast.makeText(this, "Item deleted", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(EntryView.this, VaultView.class);
+            Intent intent = new Intent(EntryViewActivity.this, VaultViewActivity.class);
             startActivity(intent);
         }
 

@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.navigation.ui.AppBarConfiguration;
 
@@ -18,7 +17,7 @@ import com.upi.passguard.databinding.ActivityAddEntryBinding;
 
 import java.util.Objects;
 
-public class AddEntry extends AppCompatActivity {
+public class AddEntryActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityAddEntryBinding binding;
@@ -52,13 +51,13 @@ public class AddEntry extends AppCompatActivity {
             String password = passwordText.getText().toString();
             String url = urlText.getText().toString();
             String notes = notesText.getText().toString();
-            SessionManagement sessionManagement = new SessionManagement(AddEntry.this);
+            SessionManagement sessionManagement = new SessionManagement(AddEntryActivity.this);
 
             VaultModel vaultModel = new VaultModel(-1, title, username, password, url, notes);
-            DataBaseHelper dataBaseHelper = new DataBaseHelper(AddEntry.this, "passguard.db", null, 1);
+            DataBaseHelper dataBaseHelper = new DataBaseHelper(AddEntryActivity.this, "passguard.db", null, 1);
             dataBaseHelper.addEntry(vaultModel, sessionManagement.getSession());
-            Toast.makeText(AddEntry.this, "Entry successfully added", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(AddEntry.this, VaultView.class);
+            Toast.makeText(AddEntryActivity.this, "Entry successfully added", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(AddEntryActivity.this, VaultViewActivity.class);
             startActivity(intent);
 
         });

@@ -12,12 +12,10 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.upi.passguard.databinding.ActivityEditEntryBinding;
-import com.upi.passguard.databinding.ActivityEntryViewBinding;
 
-import java.util.List;
 import java.util.Objects;
 
-public class EditEntry extends AppCompatActivity {
+public class EditEntryActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private @NonNull ActivityEditEntryBinding binding;
@@ -66,13 +64,13 @@ public class EditEntry extends AppCompatActivity {
                 url = urlTV.getText().toString();
                 notes = notesTV.getText().toString();
 
-                DataBaseHelper dataBaseHelper = new DataBaseHelper(EditEntry.this, "passguard.db", null, 1);
-                SessionManagement sessionManagement = new SessionManagement(EditEntry.this);
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(EditEntryActivity.this, "passguard.db", null, 1);
+                SessionManagement sessionManagement = new SessionManagement(EditEntryActivity.this);
 
                 dataBaseHelper.editEntry(id, sessionManagement.getSession(), title, username, password, url, notes);
 
-                Toast.makeText(EditEntry.this, "Item updated", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(EditEntry.this, VaultView.class);
+                Toast.makeText(EditEntryActivity.this, "Item updated", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(EditEntryActivity.this, VaultViewActivity.class);
                 startActivity(intent);
             }
         });

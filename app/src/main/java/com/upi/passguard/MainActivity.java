@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                     sessionManagement.saveSession(username);
 
                     Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, VaultView.class);
+                    Intent intent = new Intent(MainActivity.this, VaultViewActivity.class);
                     startActivity(intent);
                 }else {
                     //incorrect
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         newaccbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, NewAccount.class);
+                Intent intent = new Intent(MainActivity.this, NewAccountActivity.class);
                 startActivity(intent);
             }
         });
