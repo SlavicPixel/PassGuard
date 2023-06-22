@@ -4,11 +4,12 @@ import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,19 +22,26 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_URL = "URL";
     public static final String COLUMN_NOTES = "NOTES";
     public static final String ID = "ID";
+    public static final String TABLE_NAME = "entries";
+    private char[] databasePassword;
 
     // factory = null, version = 1
-    public DataBaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    public DataBaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version, String password) {
         super(context, name, factory, version);
+        this.databasePassword = password.toCharArray();
+        SQLiteDatabase db = this.getWritableDatabase(databasePassword);
+        db.close();
     }
 
 
-    // called when a database if accessed for the first time
+    // called when a database is accessed for the first time
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableStatment = "CREATE TABLE " + USERS_TABLE + " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USERNAME + " TEXT, " + COLUMN_PASSWORD + " TEXT)";
+        String createTableStatement = "CREATE TABLE " + TABLE_NAME +
+                " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_TITLE + " TEXT, " + COLUMN_USERNAME + " TEXT, " + COLUMN_PASSWORD + " TEXT, "
+                + COLUMN_URL + " TEXT, " + COLUMN_NOTES + " TEXT)";
 
-        db.execSQL(createTableStatment);
+        db.rawExecSQL(createTableStatement);
     }
 
     // called if database version number changes
@@ -42,97 +50,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean addUser(UserModel userModel) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        ContentValues cv = new ContentValues();
 
-        cv.put(COLUMN_USERNAME, userModel.getUsername());
-        cv.put(COLUMN_PASSWORD, userModel.getPassword());
-
-        long insert = db.insert(USERS_TABLE, null, cv);
-        if (insert == -1) return false;
-
-        db.close();
-        return true;
-    }
-
-    public boolean getUser(String username, String password){
-        String queryString = "SELECT * FROM " + USERS_TABLE + " WHERE "
-                + COLUMN_USERNAME + " == " + "'" + username + "'" + " AND " + COLUMN_PASSWORD + " == " + "'" + password + "'";
-
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
-
-            Cursor cursor = db.rawQuery(queryString, null);
-            cursor.moveToFirst();
-            String usernameDB = cursor.getString(1);
-            String passwordDB = cursor.getString(2);
-
-            cursor.close();
-            db.close();
-
-            return usernameDB.equals(username) && passwordDB.equals(password);
-        } catch (Exception e) {
-            return false;
-        }
-
-    }
-
-    public void createVault(String TABLE_NAME){
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String createTableStatement = "CREATE TABLE " + TABLE_NAME +
-                " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_TITLE + " TEXT, " + COLUMN_USERNAME + " TEXT, " + COLUMN_PASSWORD + " TEXT, "
-                + COLUMN_URL + " TEXT, " + COLUMN_NOTES + " TEXT)";
-
-        db.execSQL(createTableStatement);
-        db.close();
-    }
-
-    public boolean addEntry(VaultModel vaultModel, String TABLE_NAME) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        ContentValues cv = new ContentValues();
-
-        cv.put(COLUMN_TITLE, vaultModel.getTitle());
-        cv.put(COLUMN_USERNAME, vaultModel.getUsername());
-        cv.put(COLUMN_PASSWORD, vaultModel.getPassword());
-        cv.put(COLUMN_URL, vaultModel.getUrl());
-        cv.put(COLUMN_NOTES, vaultModel.getNotes());
-
-        long insert = db.insert(TABLE_NAME, null, cv);
-        return insert != -1;
-    }
-
-    public void deleteEntry(int id, String TABLE_NAME) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String deleteEntryStatement = "DELETE FROM " + TABLE_NAME + " WHERE ID = " + id;
-
-        db.execSQL(deleteEntryStatement);
-        db.close();
-    }
-
-    public void editEntry(int id, String TABLE_NAME, String newTitle, String newUsername, String newPassword, String newUrl, String newNotes) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String editEntryStatement = "UPDATE " + TABLE_NAME + " SET " +
-                COLUMN_TITLE + " = '" + newTitle + "', " +
-                COLUMN_USERNAME + " = '" + newUsername + "', " +
-                COLUMN_PASSWORD + " = '" + newPassword + "', " +
-                COLUMN_URL + " = '" + newUrl + "', " +
-                COLUMN_NOTES + " = '" + newNotes + "'" +
-                " WHERE " + ID + " = " + id;
-
-                db.execSQL(editEntryStatement);
-    }
-
-
-    public List<VaultModel> getEntries(String ENTRY_TABLE){
+    public List<VaultModel> getEntries() {
         List<VaultModel> returnList = new ArrayList<>();
 
-        String queryString = "SELECT * FROM " + ENTRY_TABLE;
+        String queryString = "SELECT * FROM " + TABLE_NAME;
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase(databasePassword);
 
         Cursor cursor = db.rawQuery(queryString, null);
 
@@ -147,7 +71,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 String entryNotes = cursor.getString(5);
 
 
-                VaultModel newEntry  = new VaultModel(entryID, entryTitle, entryUsername, entryPassword, entryUrl, entryNotes);
+                VaultModel newEntry = new VaultModel(entryID, entryTitle, entryUsername, entryPassword, entryUrl, entryNotes);
                 returnList.add(newEntry);
             } while (cursor.moveToNext());
         } else {
@@ -160,24 +84,45 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return returnList;
     }
 
-    public boolean userExists(String TABLE_NAME) {
-        String queryString = "SELECT * FROM sqlite_master WHERE type='table' AND name='" + TABLE_NAME + "'";
-        boolean exists = true;
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
+    public boolean addEntry(VaultModel vaultModel) {
+        SQLiteDatabase db = this.getWritableDatabase(databasePassword);
+        ContentValues cv = new ContentValues();
 
-            Cursor cursor = db.rawQuery(queryString, null);
-            cursor.moveToFirst();
-            int count = cursor.getCount();
-            if(count == 0) exists = false;
+        cv.put(COLUMN_TITLE, vaultModel.getTitle());
+        cv.put(COLUMN_USERNAME, vaultModel.getUsername());
+        cv.put(COLUMN_PASSWORD, vaultModel.getPassword());
+        cv.put(COLUMN_URL, vaultModel.getUrl());
+        cv.put(COLUMN_NOTES, vaultModel.getNotes());
 
-            cursor.close();
-            db.close();
+        long insert = db.insert(TABLE_NAME, null, cv);
+        db.close();
 
-
-        } catch (Exception e) {
-            return false;
-        }
-        return exists;
+        return insert != -1;
     }
+
+    public void deleteEntry(int id) {
+        SQLiteDatabase db = this.getWritableDatabase(databasePassword);
+
+        String deleteEntryStatement = "DELETE FROM " + TABLE_NAME + " WHERE ID = " + id;
+
+        db.execSQL(deleteEntryStatement);
+        db.close();
+    }
+
+    // TODO: change arguments to accept a VaultModel
+    public void editEntry(int id, String newTitle, String newUsername, String newPassword, String newUrl, String newNotes) {
+        SQLiteDatabase db = this.getWritableDatabase(databasePassword);
+
+        String editEntryStatement = "UPDATE " + TABLE_NAME + " SET " +
+                COLUMN_TITLE + " = '" + newTitle + "', " +
+                COLUMN_USERNAME + " = '" + newUsername + "', " +
+                COLUMN_PASSWORD + " = '" + newPassword + "', " +
+                COLUMN_URL + " = '" + newUrl + "', " +
+                COLUMN_NOTES + " = '" + newNotes + "'" +
+                " WHERE " + ID + " = " + id;
+
+        db.execSQL(editEntryStatement);
+        db.close();
+    }
+
 }

@@ -48,9 +48,9 @@ public class VaultViewActivity extends AppCompatActivity implements Entries_Recy
         //logOutButton = findViewById(R.id.logOutButton);
         recyclerView = findViewById(R.id.entriesRecyclerView);
 
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(VaultViewActivity.this, "passguard.db", null, 1);
         SessionManagement sessionManagement = new SessionManagement(VaultViewActivity.this);
-        List<VaultModel> entries = dataBaseHelper.getEntries(sessionManagement.getSession());
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(VaultViewActivity.this, sessionManagement.getSession(true) + ".db", null, 1, sessionManagement.getSession(false));
+        List<VaultModel> entries = dataBaseHelper.getEntries();
 
         Entries_RecyclerViewAdapter adapter = new Entries_RecyclerViewAdapter(VaultViewActivity.this, entries, this);
         recyclerView.setAdapter(adapter);
@@ -71,9 +71,10 @@ public class VaultViewActivity extends AppCompatActivity implements Entries_Recy
     public void onItemClick(int position) {
         Intent intent = new Intent(VaultViewActivity.this, EntryViewActivity.class);
 
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(VaultViewActivity.this, "passguard.db", null, 1);
         SessionManagement sessionManagement = new SessionManagement(VaultViewActivity.this);
-        List<VaultModel> entries = dataBaseHelper.getEntries(sessionManagement.getSession());
+        System.loadLibrary("sqlcipher");
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(VaultViewActivity.this, sessionManagement.getSession(true) + ".db", null, 1, sessionManagement.getSession(false));
+        List<VaultModel> entries = dataBaseHelper.getEntries();
 
         intent.putExtra("ID", entries.get(position).getId());
         intent.putExtra("TITLE", entries.get(position).getTitle());

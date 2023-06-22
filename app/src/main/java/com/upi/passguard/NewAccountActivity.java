@@ -7,6 +7,7 @@ import com.google.android.material.button.MaterialButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +15,9 @@ import android.widget.Toast;
 import androidx.navigation.ui.AppBarConfiguration;
 
 import com.upi.passguard.databinding.ActivityNewAccountBinding;
+
+import java.io.File;
+import java.security.NoSuchAlgorithmException;
 
 public class NewAccountActivity extends AppCompatActivity {
 
@@ -41,15 +45,20 @@ public class NewAccountActivity extends AppCompatActivity {
                 String username = newUsername.getText().toString();
                 String password = newPassword.getText().toString();
                 String passwordConfirm = newPasswordConfirm.getText().toString();
-                DataBaseHelper dataBaseHelper = new DataBaseHelper(NewAccountActivity.this, "passguard.db", null, 1);
-                UserModel userModel;
+                Utils utils = new Utils();
 
-                if(!dataBaseHelper.userExists(username))
+                if(!utils.dbExist(NewAccountActivity.this, username + ".db"))
                 {
                     if(password.equals(passwordConfirm)){
-                        userModel = new UserModel(-1, username, password);
-                        dataBaseHelper.addUser(userModel);
-                        dataBaseHelper.createVault(username);
+                        PBKDF2Helper pbkdf2Helper = new PBKDF2Helper();
+                        try {
+                            password = pbkdf2Helper.getPBKDF2Hash(password, pbkdf2Helper.getSalt(username));
+                        } catch (NoSuchAlgorithmException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        System.loadLibrary("sqlcipher");
+                        DataBaseHelper dataBaseHelper = new DataBaseHelper(NewAccountActivity.this, username + ".db", null, 1, password);
 
                         Toast.makeText(NewAccountActivity.this, "Account successfully created", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(NewAccountActivity.this, MainActivity.class);
@@ -58,10 +67,10 @@ public class NewAccountActivity extends AppCompatActivity {
                     else {
                         Toast.makeText(NewAccountActivity.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(NewAccountActivity.this, "Database with that name already exists", Toast.LENGTH_SHORT).show();
                 }
-                else {
-                    Toast.makeText(NewAccountActivity.this, "User with that name already exists. Please choose a different username.", Toast.LENGTH_SHORT).show();
-                }
+
 
             }
         });

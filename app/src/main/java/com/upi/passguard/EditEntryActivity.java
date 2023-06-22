@@ -64,10 +64,11 @@ public class EditEntryActivity extends AppCompatActivity {
                 url = urlTV.getText().toString();
                 notes = notesTV.getText().toString();
 
-                DataBaseHelper dataBaseHelper = new DataBaseHelper(EditEntryActivity.this, "passguard.db", null, 1);
+                System.loadLibrary("sqlcipher");
                 SessionManagement sessionManagement = new SessionManagement(EditEntryActivity.this);
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(EditEntryActivity.this, sessionManagement.getSession(true) + ".db", null, 1, sessionManagement.getSession(false));
 
-                dataBaseHelper.editEntry(id, sessionManagement.getSession(), title, username, password, url, notes);
+                dataBaseHelper.editEntry(id, title, username, password, url, notes);
 
                 Toast.makeText(EditEntryActivity.this, "Item updated", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(EditEntryActivity.this, VaultViewActivity.class);

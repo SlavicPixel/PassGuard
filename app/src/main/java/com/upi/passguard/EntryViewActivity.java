@@ -71,9 +71,9 @@ public class EntryViewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(EntryViewActivity.this, EditEntryActivity.class);
 
-                DataBaseHelper dataBaseHelper = new DataBaseHelper(EntryViewActivity.this, "passguard.db", null, 1);
                 SessionManagement sessionManagement = new SessionManagement(EntryViewActivity.this);
-                List<VaultModel> entries = dataBaseHelper.getEntries(sessionManagement.getSession());
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(EntryViewActivity.this, sessionManagement.getSession(true) + ".db", null, 1, sessionManagement.getSession(false));
+                List<VaultModel> entries = dataBaseHelper.getEntries();
                 id = getIntent().getIntExtra("ID", 0);
 
                 intent.putExtra("ID", id);
@@ -97,13 +97,13 @@ public class EntryViewActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(EntryViewActivity.this, "passguard.db", null, 1);
         SessionManagement sessionManagement = new SessionManagement(EntryViewActivity.this);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(EntryViewActivity.this, sessionManagement.getSession(true) + ".db", null, 1, sessionManagement.getSession(false));
         int itemId = item.getItemId();
 
         if (itemId == R.id.deleteEntry){
             id = getIntent().getIntExtra("ID", 0);
-            dataBaseHelper.deleteEntry(id, sessionManagement.getSession());
+            dataBaseHelper.deleteEntry(id);
             Toast.makeText(this, "Item deleted", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(EntryViewActivity.this, VaultViewActivity.class);
             startActivity(intent);

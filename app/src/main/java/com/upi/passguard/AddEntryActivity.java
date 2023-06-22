@@ -18,13 +18,10 @@ import com.upi.passguard.databinding.ActivityAddEntryBinding;
 import java.util.Objects;
 
 public class AddEntryActivity extends AppCompatActivity {
-
-    private AppBarConfiguration appBarConfiguration;
     private ActivityAddEntryBinding binding;
     Button addEntryButton;
     EditText titleText, usernameText, passwordText, urlText, notesText;
     MaterialToolbar toolbar;
-    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +51,8 @@ public class AddEntryActivity extends AppCompatActivity {
             SessionManagement sessionManagement = new SessionManagement(AddEntryActivity.this);
 
             VaultModel vaultModel = new VaultModel(-1, title, username, password, url, notes);
-            DataBaseHelper dataBaseHelper = new DataBaseHelper(AddEntryActivity.this, "passguard.db", null, 1);
-            dataBaseHelper.addEntry(vaultModel, sessionManagement.getSession());
+            DataBaseHelper dataBaseHelper = new DataBaseHelper(AddEntryActivity.this, sessionManagement.getSession(true) + ".db", null, 1, sessionManagement.getSession(false));
+            dataBaseHelper.addEntry(vaultModel);
             Toast.makeText(AddEntryActivity.this, "Entry successfully added", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(AddEntryActivity.this, VaultViewActivity.class);
             startActivity(intent);
