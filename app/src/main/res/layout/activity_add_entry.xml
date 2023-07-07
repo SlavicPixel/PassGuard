@@ -62,22 +62,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleEntry" />
 
-    <EditText
-        android:id="@+id/passwordEntry"
-        android:layout_width="0dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordEntryLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:singleLine="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:ems="10"
-        android:hint="@string/passwordEntry"
-        android:inputType="textPassword"
         android:textColor="@color/white"
-        android:textColorHint="#85C2C2C2"
+        android:theme="@style/Theme.AppCompat"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameEntry" />
+        app:layout_constraintTop_toBottomOf="@id/usernameEntry"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordEntry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ems="10"
+            android:hint="@string/passwordEntry"
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            android:textColorHint="#85C2C2C2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <EditText
         android:id="@+id/urlEntry"
@@ -94,7 +107,7 @@
         android:textColorHint="#85C2C2C2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEntry" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordEntryLayout" />
 
     <EditText
         android:id="@+id/notesEntry"

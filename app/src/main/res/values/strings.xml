@@ -52,7 +52,7 @@
     <string name="newPassword">Enter a password</string>
     <string name="newPasswordConfirm">Confirm password</string>
     <string name="signUp">Sign Up</string>
-    <string name="register">Register</string>
+    <string name="register">Sign Up</string>
     <string name="login">Login</string>
     <string name="Vault">Enteries</string>
     <string name="title_activity_add_entry">AddEntry</string>
@@ -68,4 +68,5 @@
     <string name="title_activity_entry_view">EntryView</string>
     <string name="delete_entry">Delete entry</string>
     <string name="editEntryButton">editEntryButton</string>
+    <string name="account_question">Don\'t have an account?</string>
 </resources>
