@@ -1,5 +1,6 @@
 package com.upi.passguard;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -18,6 +19,7 @@ import com.upi.passguard.databinding.ActivityNewAccountBinding;
 
 import java.io.File;
 import java.security.NoSuchAlgorithmException;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class NewAccountActivity extends AppCompatActivity {
 
@@ -60,9 +62,20 @@ public class NewAccountActivity extends AppCompatActivity {
                         System.loadLibrary("sqlcipher");
                         DataBaseHelper dataBaseHelper = new DataBaseHelper(NewAccountActivity.this, username + ".db", null, 1, password);
 
-                        Toast.makeText(NewAccountActivity.this, "Account successfully created", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(NewAccountActivity.this, MainActivity.class);
-                        startActivity(intent);
+
+                        new MaterialAlertDialogBuilder(NewAccountActivity.this)
+                                .setTitle("Warning")
+                                .setMessage(R.string.alertMessage)
+                                .setNeutralButton("I understand", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(NewAccountActivity.this, "Account successfully created", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(NewAccountActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                    }
+                                })
+                                .show();
+
                     }
                     else {
                         Toast.makeText(NewAccountActivity.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
