@@ -26,7 +26,11 @@ public class NewAccountActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityNewAccountBinding binding;
 
+    MaterialButton newaccbtn;
 
+    TextView newUsername;
+    TextView newPassword;
+    TextView newPasswordConfirm;
 
 
     @Override
@@ -36,58 +40,84 @@ public class NewAccountActivity extends AppCompatActivity {
         binding = ActivityNewAccountBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        MaterialButton newaccbtn = findViewById(R.id.newaccbtn);
+        newaccbtn = findViewById(R.id.newaccbtn);
 
-        TextView newUsername = findViewById(R.id.newUsername);
-        TextView newPassword =  findViewById(R.id.newPassword);
-        TextView newPasswordConfirm = findViewById(R.id.newPasswordConfirm);
+        newUsername = findViewById(R.id.newUsername);
+        newPassword =  findViewById(R.id.newPassword);
+        newPasswordConfirm = findViewById(R.id.newPasswordConfirm);
 
         newaccbtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String username = newUsername.getText().toString();
                 String password = newPassword.getText().toString();
                 String passwordConfirm = newPasswordConfirm.getText().toString();
-                Utils utils = new Utils();
 
-                if(!utils.dbExist(NewAccountActivity.this, username + ".db"))
+                if(ValidateFields(username, password, passwordConfirm))
                 {
-                    if(password.equals(passwordConfirm)){
-                        PBKDF2Helper pbkdf2Helper = new PBKDF2Helper();
-                        try {
-                            password = pbkdf2Helper.getPBKDF2Hash(password, pbkdf2Helper.getSalt(username));
-                        } catch (NoSuchAlgorithmException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                        System.loadLibrary("sqlcipher");
-                        DataBaseHelper dataBaseHelper = new DataBaseHelper(NewAccountActivity.this, username + ".db", null, 1, password);
-
-
-                        new MaterialAlertDialogBuilder(NewAccountActivity.this)
-                                .setTitle("Warning")
-                                .setMessage(R.string.alertMessage)
-                                .setNeutralButton("I understand", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Toast.makeText(NewAccountActivity.this, "Account successfully created", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(NewAccountActivity.this, MainActivity.class);
-                                        startActivity(intent);
-                                    }
-                                })
-                                .show();
-
+                    PBKDF2Helper pbkdf2Helper = new PBKDF2Helper();
+                    try {
+                        password = pbkdf2Helper.getPBKDF2Hash(password, pbkdf2Helper.getSalt(username));
+                    } catch (NoSuchAlgorithmException e) {
+                        throw new RuntimeException(e);
                     }
-                    else {
-                        Toast.makeText(NewAccountActivity.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
+
+                    System.loadLibrary("sqlcipher");
+                    DataBaseHelper dataBaseHelper = new DataBaseHelper(NewAccountActivity.this, username + ".db", null, 1, password);
+
+
+                    new MaterialAlertDialogBuilder(NewAccountActivity.this)
+                            .setTitle("Warning")
+                            .setMessage(R.string.alertMessage)
+                            .setNeutralButton("I understand", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(NewAccountActivity.this, "Account successfully created", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(NewAccountActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                            })
+                            .show();
                     }
-                } else {
-                    Toast.makeText(NewAccountActivity.this, "Database with that name already exists", Toast.LENGTH_SHORT).show();
-                }
 
 
             }
         });
+
+
     }
 
+    private boolean ValidateFields(String username, String password, String passwordConfirm) {
+        Utils utils = new Utils();
 
+        if(utils.dbExist(NewAccountActivity.this, username + ".db"))
+        {
+            newUsername.setError("Database with that name already exists");
+            Toast.makeText(NewAccountActivity.this, "Database with that name already exists", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+
+        if(!password.equals(passwordConfirm))
+        {
+            newPassword.setError("Passwords do not match!");
+            newPasswordConfirm.setError("Passwords do not match!");
+            Toast.makeText(NewAccountActivity.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if(username.length() == 0)
+        {
+            newUsername.setError("This field is required!");
+            Toast.makeText(NewAccountActivity.this, "Username and password fields cannot be empty!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if(password.length() == 0) {
+            newPassword.setError("This field is required!");
+            Toast.makeText(NewAccountActivity.this, "Username and password fields cannot be empty!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
 }
