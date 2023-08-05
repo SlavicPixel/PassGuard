@@ -5,9 +5,12 @@ import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -72,11 +75,35 @@ public class EntryViewActivity extends AppCompatActivity {
         urlTV.setText(url);
         notesTV.setText(notes);
 
+        ActivityResultLauncher<Intent> EditEntryActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+
+                        if (data != null) {
+                            titleTV.setText(data.getStringExtra("Updated title"));
+                            usernameTV.setText(data.getStringExtra("Updated username"));
+                            passwordTV.setText(data.getStringExtra("Updated password"));
+                            urlTV.setText(data.getStringExtra("Updated url"));
+                            notesTV.setText(data.getStringExtra("Updated notes"));
+
+                            title = data.getStringExtra("Updated title");
+                            username = data.getStringExtra("Updated username");
+                            password = data.getStringExtra("Updated password");
+                            url = data.getStringExtra("Updated url");
+                            notes = data.getStringExtra("Updated notes");
+                        }
+
+                    }
+                });
+
         editEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EntryViewActivity.this, EditEntryActivity.class);
 
+                System.loadLibrary("sqlcipher");
                 SessionManagement sessionManagement = new SessionManagement(EntryViewActivity.this);
                 DataBaseHelper dataBaseHelper = new DataBaseHelper(EntryViewActivity.this, sessionManagement.getSession(true) + ".db", null, 1, sessionManagement.getSession(false));
                 List<VaultModel> entries = dataBaseHelper.getEntries();
@@ -89,7 +116,7 @@ public class EntryViewActivity extends AppCompatActivity {
                 intent.putExtra("URL", url);
                 intent.putExtra("NOTES", notes);
 
-                startActivity(intent);
+                EditEntryActivityResultLauncher.launch(intent);
             }
         });
 
@@ -112,6 +139,8 @@ public class EntryViewActivity extends AppCompatActivity {
                 Toast.makeText(EntryViewActivity.this, "Password copied", Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     @Override

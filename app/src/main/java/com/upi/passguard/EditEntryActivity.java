@@ -79,8 +79,15 @@ public class EditEntryActivity extends AppCompatActivity {
                 dataBaseHelper.editEntry(id, title, username, password, url, notes);
 
                 Toast.makeText(EditEntryActivity.this, "Item updated", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(EditEntryActivity.this, VaultViewActivity.class);
-                startActivity(intent);
+
+                Intent intent = new Intent();
+                intent.putExtra("Updated title", title);
+                intent.putExtra("Updated username", username);
+                intent.putExtra("Updated password", password);
+                intent.putExtra("Updated url", url);
+                intent.putExtra("Updated notes", notes);
+                setResult(RESULT_OK, intent);
+                EditEntryActivity.super.onBackPressed();
             }
         });
 
