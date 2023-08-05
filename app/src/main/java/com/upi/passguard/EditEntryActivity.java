@@ -1,12 +1,18 @@
 package com.upi.passguard;
 
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.ui.AppBarConfiguration;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +29,7 @@ public class EditEntryActivity extends AppCompatActivity {
     String title, username, password, url, notes;
     TextView titleTV, usernameTV, passwordTV, urlTV, notesTV;
     FloatingActionButton updateEntryButton;
+    ImageView passwordGeneratorIV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +55,7 @@ public class EditEntryActivity extends AppCompatActivity {
         urlTV = findViewById(R.id.urlTextView);
         notesTV = findViewById(R.id.notesTextView);
         updateEntryButton = findViewById(R.id.updateEntryButton);
+        passwordGeneratorIV = findViewById(R.id.GeneratePassword);
 
         titleTV.setText(title);
         usernameTV.setText(username);
@@ -73,6 +81,28 @@ public class EditEntryActivity extends AppCompatActivity {
                 Toast.makeText(EditEntryActivity.this, "Item updated", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(EditEntryActivity.this, VaultViewActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        ActivityResultLauncher<Intent> PasswordGeneratorActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+
+                        if (data != null) {
+                            passwordTV.setText(data.getStringExtra("Generated Password"));
+                            password = data.getStringExtra("Generated Password");
+                        }
+
+                    }
+                });
+
+        passwordGeneratorIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EditEntryActivity.this, PasswordGeneratorActivity.class);
+                PasswordGeneratorActivityResultLauncher.launch(intent);
             }
         });
 

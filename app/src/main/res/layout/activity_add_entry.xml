@@ -64,7 +64,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordEntryLayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
@@ -72,7 +72,7 @@
         android:textColor="@color/white"
         android:theme="@style/Theme.AppCompat"
         app:hintEnabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/GeneratePassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/usernameEntry"
         app:passwordToggleEnabled="true">
@@ -81,16 +81,27 @@
             android:id="@+id/passwordEntry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
             android:ems="10"
             android:hint="@string/passwordEntry"
             android:inputType="textPassword"
+            android:singleLine="true"
             android:textColor="@color/white"
             android:textColorHint="#85C2C2C2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/GeneratePassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:rotation="90"
+        app:layout_constraintBottom_toTopOf="@+id/urlEntry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameEntry"
+        app:srcCompat="@drawable/baseline_autorenew_24" />
 
     <EditText
         android:id="@+id/urlEntry"
@@ -140,4 +151,7 @@
         android:textColor="@color/black"
         android:backgroundTint="@color/design_default_color_secondary"
         app:layout_constraintTop_toBottomOf="@+id/notesEntry" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

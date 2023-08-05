@@ -13,6 +13,11 @@
         android:theme="@style/Theme.PassGuard"
         tools:targetApi="31">
         <activity
+            android:name=".PasswordGeneratorActivity"
+            android:exported="false"
+            android:label="@string/title_activity_password_generator"
+            android:theme="@style/Theme.PassGuard" />
+        <activity
             android:name=".EditEntryActivity"
             android:exported="false" />
         <activity

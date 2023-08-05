@@ -74,4 +74,19 @@
         Your username is used as your database filename and your password is used to encrypt the database,
         therefore your password is not stored anywhere and is unrecoverable.
     </string>
+    <string name="title_activity_password_generator">PasswordGeneratorActivity</string>
+    <string name="length">Length</string>
+    <string name="uppercase">A-Z</string>
+    <string name="uppercase_switch">Uppercase (A to Z) </string>
+    <string name="lowercase">a-z</string>
+    <string name="lowercase_switch">Lowercase (a to z) </string>
+    <string name="numbers">0–9</string>
+    <string name="numbers_switch">Numbers (0 to 9) </string>
+    <string name="special_chars">!@#$%^&amp;*</string>
+    <string name="special_chars_switch">Special characters (!@#$%^&amp;*) </string>
+    <string name="save_password">Save password</string>
+    <string name="generatePW_description">SVG for generating a new password</string>
+    <string name="copyPW_description">SVG for copying to the clipboard</string>
+
+
 </resources>
