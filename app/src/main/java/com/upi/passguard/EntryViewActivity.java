@@ -1,5 +1,7 @@
 package com.upi.passguard;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +32,7 @@ public class EntryViewActivity extends AppCompatActivity {
     String title, username, password, url, notes;
     TextView titleTV, usernameTV, passwordTV, urlTV, notesTV;
     FloatingActionButton editEntryButton;
+    ImageView copyUN_IV, copyPW_IV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,8 @@ public class EntryViewActivity extends AppCompatActivity {
         urlTV = findViewById(R.id.urlTextView);
         notesTV = findViewById(R.id.notesTextView);
         editEntryButton = findViewById(R.id.editEntryButton);
+        copyUN_IV = findViewById(R.id.usernameCopy);
+        copyPW_IV = findViewById(R.id.passwrodCopy);
 
         titleTV.setShowSoftInputOnFocus(false);
         usernameTV.setShowSoftInputOnFocus(false);
@@ -84,6 +90,26 @@ public class EntryViewActivity extends AppCompatActivity {
                 intent.putExtra("NOTES", notes);
 
                 startActivity(intent);
+            }
+        });
+
+        copyUN_IV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("Entry Username", username);
+                clipboardManager.setPrimaryClip(clipData);
+                Toast.makeText(EntryViewActivity.this, "Username copied", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        copyPW_IV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("Entry Password", password);
+                clipboardManager.setPrimaryClip(clipData);
+                Toast.makeText(EntryViewActivity.this, "Password copied", Toast.LENGTH_SHORT).show();
             }
         });
     }

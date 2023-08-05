@@ -4,13 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,11 +16,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.view.WindowCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.upi.passguard.databinding.ActivityPasswordGeneratorBinding;
@@ -45,6 +39,15 @@ public class PasswordGeneratorActivity extends AppCompatActivity {
     Button savePassword_Btn;
     int passwordLength = 12;
     String password;
+
+    private static final String MY_PREFS = "switch_prefs";
+    private static final String uppercaseSwitch_STATUS = "uppercaseSwitch_status";
+    private static final String lowercaseSwitch_STATUS = "lowercaseSwitch_status";
+    private static final String numbersSwitch_STATUS = "numbersSwitch_status";
+    private static final String specialCharsSwitch_STATUS = "specialCharsSwitch_status";
+
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     @SuppressLint("DefaultLocale")
     @Override
@@ -92,10 +95,19 @@ public class PasswordGeneratorActivity extends AppCompatActivity {
             }
         });
 
+        sharedPreferences = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
+        editor = getSharedPreferences(MY_PREFS, MODE_PRIVATE).edit();
+
+        uppercaseSwitch.setChecked(sharedPreferences.getBoolean(uppercaseSwitch_STATUS, false));
+        lowercaseSwitch.setChecked(sharedPreferences.getBoolean(lowercaseSwitch_STATUS, true));
+        numbersSwitch.setChecked(sharedPreferences.getBoolean(numbersSwitch_STATUS, true));
+        specialCharsSwitch.setChecked(sharedPreferences.getBoolean(specialCharsSwitch_STATUS, false));
         uppercaseSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setPassword(passwordLength);
+                editor.putBoolean(uppercaseSwitch_STATUS, uppercaseSwitch.isChecked());
+                editor.apply();
             }
         });
 
@@ -103,6 +115,8 @@ public class PasswordGeneratorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setPassword(passwordLength);
+                editor.putBoolean(lowercaseSwitch_STATUS, lowercaseSwitch.isChecked());
+                editor.apply();
             }
         });
 
@@ -110,6 +124,8 @@ public class PasswordGeneratorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setPassword(passwordLength);
+                editor.putBoolean(numbersSwitch_STATUS, numbersSwitch.isChecked());
+                editor.apply();
             }
         });
 
@@ -117,6 +133,8 @@ public class PasswordGeneratorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setPassword(passwordLength);
+                editor.putBoolean(specialCharsSwitch_STATUS, specialCharsSwitch.isChecked());
+                editor.apply();
             }
         });
 
@@ -131,7 +149,7 @@ public class PasswordGeneratorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                ClipData clipData = ClipData.newPlainText("Generated Password", generatedPW_TV.getText());
+                ClipData clipData = ClipData.newPlainText("Generated Password", password);
                 clipboardManager.setPrimaryClip(clipData);
                 Toast.makeText(PasswordGeneratorActivity.this, "Password copied", Toast.LENGTH_SHORT).show();
             }
