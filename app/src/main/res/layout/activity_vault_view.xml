@@ -72,6 +72,7 @@
         android:layout_marginEnd="40dp"
         android:backgroundTint="@color/ToolbarBG"
         android:text="@string/add_an_item"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/noItems" />
