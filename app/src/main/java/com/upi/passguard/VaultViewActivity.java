@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,10 +28,10 @@ public class VaultViewActivity extends AppCompatActivity implements Entries_Recy
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityVaultViewBinding binding;
-    Button logOutButton;
+    Button addAnItemButton;
     FloatingActionButton newEntryButton;
-    //ListView entriesListView;
     RecyclerView recyclerView;
+    TextView noItemsTV;
 
 
     @Override
@@ -45,12 +46,18 @@ public class VaultViewActivity extends AppCompatActivity implements Entries_Recy
         getSupportActionBar().setTitle("My Vault");
 
         newEntryButton = findViewById(R.id.newEntryButton);
-        //logOutButton = findViewById(R.id.logOutButton);
         recyclerView = findViewById(R.id.entriesRecyclerView);
+        addAnItemButton = findViewById(R.id.addAnItemEmpty);
+        noItemsTV = findViewById(R.id.noItems);
 
         SessionManagement sessionManagement = new SessionManagement(VaultViewActivity.this);
         DataBaseHelper dataBaseHelper = new DataBaseHelper(VaultViewActivity.this, sessionManagement.getSession(true) + ".db", null, 1, sessionManagement.getSession(false));
         List<VaultModel> entries = dataBaseHelper.getEntries();
+
+        if(!entries.isEmpty()) {
+            noItemsTV.setVisibility(View.GONE);
+            addAnItemButton.setVisibility(View.GONE);
+        }
 
         Entries_RecyclerViewAdapter adapter = new Entries_RecyclerViewAdapter(VaultViewActivity.this, entries, this);
         recyclerView.setAdapter(adapter);
@@ -58,6 +65,14 @@ public class VaultViewActivity extends AppCompatActivity implements Entries_Recy
 
 
         newEntryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(VaultViewActivity.this, AddEntryActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        addAnItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(VaultViewActivity.this, AddEntryActivity.class);

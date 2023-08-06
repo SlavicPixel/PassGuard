@@ -87,6 +87,8 @@
     <string name="save_password">Save password</string>
     <string name="generatePW_description">SVG for generating a new password</string>
     <string name="copyPW_description">SVG for copying to the clipboard</string>
+    <string name="no_items">There are no items in your vault.</string>
+    <string name="add_an_item">Add an item</string>
 
 
 </resources>

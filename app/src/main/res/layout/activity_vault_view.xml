@@ -10,14 +10,6 @@
     tools:context=".VaultViewActivity"
     android:theme="@style/Theme.AppCompat">
 
-    <!--
-    <include
-        android:id="@+id/include"
-        layout="@layout/content_vault_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-        -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -58,5 +50,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
+    <TextView
+        android:id="@+id/noItems"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_items"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/entriesRecyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/entriesRecyclerView"
+        app:layout_constraintStart_toStartOf="@+id/entriesRecyclerView"
+        app:layout_constraintTop_toTopOf="@+id/entriesRecyclerView" />
+
+    <Button
+        android:id="@+id/addAnItemEmpty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="40dp"
+        android:backgroundTint="@color/ToolbarBG"
+        android:text="@string/add_an_item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/noItems" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

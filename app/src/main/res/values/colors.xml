@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="BGColor">#347C98</color>
     <color name="ToolbarBG">#25596E</color>
+    <color name="LightGrey">#949494</color>
 </resources>
