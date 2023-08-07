@@ -1,15 +1,11 @@
 package com.upi.passguard;
 
-import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteOpenHelper;
-
 import androidx.annotation.Nullable;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +57,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(queryString, null);
 
         if (cursor.moveToFirst()) {
-            // loop through the cursors (result set) and create new entry object. Put them in return list
             do {
                 int entryID = cursor.getInt(0);
                 String entryTitle = cursor.getString(1);
@@ -74,9 +69,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 VaultModel newEntry = new VaultModel(entryID, entryTitle, entryUsername, entryPassword, entryUrl, entryNotes);
                 returnList.add(newEntry);
             } while (cursor.moveToNext());
-        } else {
-            // failure, do not add anything to the list
         }
+
 
         cursor.close();
         db.close();
@@ -110,16 +104,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     // TODO: change arguments to accept a VaultModel
-    public void editEntry(int id, String newTitle, String newUsername, String newPassword, String newUrl, String newNotes) {
+    public void editEntry(VaultModel vaultModel) {
         SQLiteDatabase db = this.getWritableDatabase(databasePassword);
 
         String editEntryStatement = "UPDATE " + TABLE_NAME + " SET " +
-                COLUMN_TITLE + " = '" + newTitle + "', " +
-                COLUMN_USERNAME + " = '" + newUsername + "', " +
-                COLUMN_PASSWORD + " = '" + newPassword + "', " +
-                COLUMN_URL + " = '" + newUrl + "', " +
-                COLUMN_NOTES + " = '" + newNotes + "'" +
-                " WHERE " + ID + " = " + id;
+                COLUMN_TITLE + " = '" + vaultModel.getTitle() + "', " +
+                COLUMN_USERNAME + " = '" + vaultModel.getUsername() + "', " +
+                COLUMN_PASSWORD + " = '" + vaultModel.getPassword() + "', " +
+                COLUMN_URL + " = '" + vaultModel.getUrl() + "', " +
+                COLUMN_NOTES + " = '" + vaultModel.getNotes() + "'" +
+                " WHERE " + ID + " = " + vaultModel.getId();
 
         db.execSQL(editEntryStatement);
         db.close();

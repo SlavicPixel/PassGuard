@@ -72,11 +72,13 @@ public class EditEntryActivity extends AppCompatActivity {
                 url = urlTV.getText().toString();
                 notes = notesTV.getText().toString();
 
+                VaultModel editedEntry = new VaultModel(id, title, username, password, url, notes);
+
                 System.loadLibrary("sqlcipher");
                 SessionManagement sessionManagement = new SessionManagement(EditEntryActivity.this);
                 DataBaseHelper dataBaseHelper = new DataBaseHelper(EditEntryActivity.this, sessionManagement.getSession(true) + ".db", null, 1, sessionManagement.getSession(false));
 
-                dataBaseHelper.editEntry(id, title, username, password, url, notes);
+                dataBaseHelper.editEntry(editedEntry);
 
                 Toast.makeText(EditEntryActivity.this, "Item updated", Toast.LENGTH_SHORT).show();
 
