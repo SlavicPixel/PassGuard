@@ -1,5 +1,6 @@
 package com.upi.passguard;
 
+@Deprecated
 public class UserModel {
     private int id;
     private String username;
