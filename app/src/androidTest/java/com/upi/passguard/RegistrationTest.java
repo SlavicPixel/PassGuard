@@ -15,7 +15,9 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import org.junit.After;
@@ -78,6 +80,7 @@ public class RegistrationTest {
         onView(withId(R.id.newPasswordConfirm)).check(matches(withText("")));
         onView(withId(R.id.newPasswordConfirm)).perform(typeText("RegistrationTesting"), closeSoftKeyboard());
         onView(withId(R.id.newaccbtn)).perform(click());
+        onView(ViewMatchers.withText("I understand")).perform(ViewActions.click());
 
         // 4. In MainActivity, input user credentials and click the login button
         // Checking if registration was successful

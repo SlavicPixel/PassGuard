@@ -14,7 +14,9 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -48,15 +50,16 @@ public class AppFlowTest {
         onView(withId(R.id.newaccbtn)).perform(click());
         intended(hasComponent(NewAccountActivity.class.getName()));
 
-        // 2. In NewAccounnt activity, input user information and click the register button
-        onView(withId(R.id.newUsername)).perform(typeText("AppFlowTestingUsername"), closeSoftKeyboard());
-        onView(withId(R.id.newPassword)).perform(typeText("appFlowTestingPassword"), closeSoftKeyboard());
-        onView(withId(R.id.newPasswordConfirm)).perform(typeText("appFlowTestingPassword"), closeSoftKeyboard());
+        // 2. In NewAccount activity, input user information and click the register button
+        onView(withId(R.id.newUsername)).perform(typeText("AppFlowTest1"), closeSoftKeyboard());
+        onView(withId(R.id.newPassword)).perform(typeText("appFlowTestPassword"), closeSoftKeyboard());
+        onView(withId(R.id.newPasswordConfirm)).perform(typeText("appFlowTestPassword"), closeSoftKeyboard());
         onView(withId(R.id.newaccbtn)).perform(click());
+        onView(ViewMatchers.withText("I understand")).perform(ViewActions.click());
 
         // 4. In MainActivity, input user credentials and click the login button
-        onView(withId(R.id.username)).perform(typeText("AppFlowTestingUsername"), closeSoftKeyboard());
-        onView(withId(R.id.password)).perform(typeText("appFlowTestingPassword"), closeSoftKeyboard());
+        onView(withId(R.id.username)).perform(typeText("AppFlowTest1"), closeSoftKeyboard());
+        onView(withId(R.id.password)).perform(typeText("appFlowTestPassword"), closeSoftKeyboard());
         onView(withId(R.id.loginbtn)).perform(click());
 
         // 5. After login, VaultViewActivity activity should be opened
@@ -100,7 +103,7 @@ public class AppFlowTest {
         // 12. Click the edit button to edit the selected entry
         onView(withId(R.id.editEntryButton)).perform(click());
 
-        // 14. In EditEntryActivity activity, edit the selected entry and updated it with new values
+        // 13. In EditEntryActivity activity, edit the selected entry and updated it with new values
         onView(withId(R.id.titleTextView)).perform(typeText("Updated"), closeSoftKeyboard());
         onView(withId(R.id.usernameTextView)).perform(typeText("Updated"), closeSoftKeyboard());
         onView(withId(R.id.passwordTextView)).perform(typeText("Updated"), closeSoftKeyboard());
@@ -108,22 +111,34 @@ public class AppFlowTest {
         onView(withId(R.id.notesTextView)).perform(typeText("Updated"), closeSoftKeyboard());
         onView(withId(R.id.updateEntryButton)).perform(click());
 
-        // 15. Click on the same entry again with intent to delete it
-        onView(withId(R.id.entriesRecyclerView))
-                .perform(actionOnItemAtPosition(0, click()));
-
-        //16. EntryViewActivity activity should appear, check if values were updates
+        // 14. EntryViewActivity activity should appear, check if values were updates
         onView(withId(R.id.titleTextView)).check(matches(withText(Title + "Updated")));
         onView(withId(R.id.usernameTextView)).check(matches(withText(Username + "Updated")));
         onView(withId(R.id.passwordTextView)).check(matches(withText(Password + "Updated")));
         onView(withId(R.id.urlTextView)).check(matches(withText(URL + "Updated")));
         onView(withId(R.id.notesTextView)).check(matches(withText(Notes + "Updated")));
 
-        // 17. Open options menu and click delete button
+        // 15. Edit the entry again to add a generated password
+        onView(withId(R.id.editEntryButton)).perform(click());
+
+        // 16. Open PasswordGeneratorActivity
+        onView(withId(R.id.GeneratePassword)).perform(click());
+
+        // 17. Generate a password and save it to the entry
+        onView(withId(R.id.uppercaseSwitch)).perform(click());
+        onView(withId(R.id.lowercaseSwitch)).perform(click());
+        onView(withId(R.id.specialCharsSwitch)).perform(click());
+        onView(withId(R.id.uppercaseSwitch)).perform(click());
+        onView(withId(R.id.numbersSwitch)).perform(click());
+        onView(withId(R.id.specialCharsSwitch)).perform(click());
+        onView(withId(R.id.savePassword)).perform(click());
+        onView(withId(R.id.updateEntryButton)).perform(click());
+
+        // 18. Open options menu and click delete button
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText("Delete entry")).perform(click());
 
-        // 18. Open options menu and click logout button
+        // 19. Open options menu and click logout button
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText("Logout")).perform(click());
 

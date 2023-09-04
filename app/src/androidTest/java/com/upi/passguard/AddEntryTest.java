@@ -44,6 +44,7 @@ public class AddEntryTest {
     public void addEntryTest() {
 
         // 1. In MainActivity, input user credentials and click the login button
+        // addEntryTest user should be created in the app before the test in run
         onView(withId(R.id.username)).perform(typeText("addEntryTest"), closeSoftKeyboard());
         onView(withId(R.id.password)).perform(typeText("addentrytesting"), closeSoftKeyboard());
         onView(withId(R.id.loginbtn)).perform(click());

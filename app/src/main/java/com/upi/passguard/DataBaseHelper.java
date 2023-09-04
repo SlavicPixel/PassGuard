@@ -103,7 +103,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    // TODO: change arguments to accept a VaultModel
     public void editEntry(VaultModel vaultModel) {
         SQLiteDatabase db = this.getWritableDatabase(databasePassword);
 
